@@ -1,458 +1,575 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Terminal, 
-  Download, 
-  Cpu, 
-  Shield, 
-  Layers, 
-  Zap, 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Check, 
-  Copy, 
-  Menu, 
-  X,
-  Box,
-  Monitor,
-  Heart
-} from 'lucide-react';
-
-const ZenSkinLanding = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  // The specific install command provided
-  const installCommand = `wget -O zenskin.deb`;
-
-  const copyToClipboard = () => {
-    // Creating a text area to copy from (safest method for iframes)
-    const el = document.createElement('textarea');
-    el.value = installCommand;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenSkin - Portable Linux Customization</title>
     
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  const navLinks = [
-    { name: 'Features', href: '#features' },
-    { name: 'AI Layer', href: '#ai' },
-    { name: 'Utilities', href: '#utilities' },
-    { name: 'Install', href: '#install' },
-  ];
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
 
-  const features = [
-    {
-      title: "Cross-Distro Layer",
-      desc: "Not a new OS. ZenSkin works on top of Ubuntu, Fedora, Arch, and more without requiring a reinstall.",
-      icon: <Layers className="w-6 h-6 text-cyan-400" />
-    },
-    {
-      title: "AI-Ready Environment",
-      desc: "Includes Ollama, local LLM models, and PyLlamaUI out of the box. Privacy-first offline AI.",
-      icon: <Cpu className="w-6 h-6 text-purple-400" />
-    },
-    {
-      title: "Safe & Reversible",
-      desc: "Non-destructive. We backup your configs. Don't like it? Rollback instantly without breaking your system.",
-      icon: <Shield className="w-6 h-6 text-emerald-400" />
-    },
-    {
-      title: "ZentoraOS Experience",
-      desc: "Get the visual polish and workflow of ZentoraOS while keeping your favorite base distribution.",
-      icon: <Zap className="w-6 h-6 text-yellow-400" />
-    }
-  ];
+    <style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white overflow-x-hidden">
 
-  const utilities = [
-    { name: 'CosmoTalker', desc: 'Advanced communication tool', link: 'https://bhuvanesh-m-dev.github.io/cosmotalker/' },
-    { name: 'FormatFlow', desc: 'Code formatting utility', link: 'https://github.com/bhuvanesh-m-dev/formatflow' },
-    { name: 'PyLlamaUI', desc: 'Local AI Interface', link: 'https://github.com/bhuvanesh-m-dev/pyllamaui' },
-    { name: 'SetBian', desc: 'Universal Installer', link: 'https://github.com/bhuvanesh-m-dev/setbian' },
-    { name: 'Cosmo4U', desc: 'Personal assistant tool', link: 'https://github.com/bhuvanesh-m-dev/cosmo4u' },
-    { name: 'Oolit', desc: 'System optimization', link: 'https://github.com/bhuvanesh-m-dev/oolit' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white overflow-x-hidden">
-      
-      {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex-shrink-0 flex items-center gap-3">
-              <img 
-                src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
-                alt="ZenSkin Logo" 
-                className="h-10 w-10 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]"
-              />
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                ZenSkin
-              </span>
-            </div>
-            
-            {/* Desktop Nav */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                {navLinks.map((link) => (
-                  <a key={link.name} href={link.href} className="hover:text-cyan-400 transition-colors duration-200 font-medium">
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-slate-300 hover:text-white">
-                {isMenuOpen ? <X /> : <Menu />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Nav */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-slate-900 border-b border-slate-800">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-3 py-2 text-base font-medium hover:bg-slate-800 hover:text-cyan-400 rounded-md"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 relative overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="flex justify-center mb-8">
-            <img 
-              src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
-              alt="ZenSkin Logo Big" 
-              className="h-32 w-32 md:h-48 md:w-48 object-contain drop-shadow-[0_0_25px_rgba(34,211,238,0.3)] animate-pulse-slow"
-            />
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-            <span className="block text-white">ZentoraOS, but</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-              Portable & Universal.
-            </span>
-          </h1>
-          
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
-            Transform your Linux system with the ZenSkin experience layer. 
-            Keep your distro, keep your files—upgrade your workflow.
-          </p>
-
-          <div className="mt-10 flex justify-center gap-4">
-            <a href="#install" className="px-8 py-3 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2">
-              <Download className="w-5 h-5" />
-              Get ZenSkin
-            </a>
-            <a href="#features" className="px-8 py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-medium border border-slate-700 transition-all flex items-center gap-2">
-              Learn More
-            </a>
-          </div>
-
-          {/* Terminal Install Block */}
-          <div className="mt-16 mx-auto max-w-3xl" id="install">
-            <div className="rounded-xl overflow-hidden bg-[#0d1117] border border-slate-800 shadow-2xl">
-              <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img 
+                        src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
+                        alt="ZenSkin Logo" 
+                        class="h-10 w-10 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                    >
+                    <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                        ZenSkin
+                    </span>
                 </div>
-                <div className="text-xs text-slate-500 font-mono">user@linux:~</div>
-                <button 
-                  onClick={copyToClipboard}
-                  className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
-                >
-                  {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                  {copied ? 'Copied!' : 'Copy Command'}
-                </button>
-              </div>
-              <div className="p-6 text-left font-mono text-sm md:text-base overflow-x-auto whitespace-pre-wrap text-slate-300">
-                <span className="text-green-400">$</span> {installCommand}
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-slate-500">
-              Downloads <span className="text-slate-300 font-mono">setbian.deb</span> installer and sets up the environment.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section id="features" className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">Why ZenSkin?</h2>
-            <p className="mt-4 text-slate-400">The power of a custom distro, the flexibility of a skin.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="p-6 bg-slate-950 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 group">
-                <div className="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  {feature.icon}
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#features" class="hover:text-cyan-400 transition-colors duration-200 font-medium">Features</a>
+                        <a href="#ai" class="hover:text-cyan-400 transition-colors duration-200 font-medium">AI Layer</a>
+                        <a href="#utilities" class="hover:text-cyan-400 transition-colors duration-200 font-medium">Utilities</a>
+                        <a href="#install" class="hover:text-cyan-400 transition-colors duration-200 font-medium">Install</a>
+                    </div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* AI Layer Section */}
-      <section id="ai" className="py-20 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-            <div>
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-medium mb-6">
-                <Zap className="w-4 h-4 mr-2" /> Signature Feature
-              </div>
-              <h2 className="text-3xl font-bold text-white sm:text-4xl mb-6">
-                The AI Layer. <br />
-                <span className="text-purple-400">Offline & Privacy-First.</span>
-              </h2>
-              <p className="text-slate-400 text-lg mb-6">
-                ZenSkin transforms your machine into an AI powerhouse instantly. It detects your CPU/GPU capabilities and auto-configures the best local models.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  'Ollama Auto-Installation',
-                  'Local LLM Models Pre-loaded',
-                  'PyLlamaUI Interface included',
-                  'GPU Acceleration Detection'
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center text-slate-300">
-                    <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
-                      <Check className="w-3 h-3 text-purple-400" />
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-10 lg:mt-0 relative">
-              <div className="absolute inset-0 bg-purple-500/20 blur-3xl rounded-full"></div>
-              <div className="relative bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl">
-                <div className="flex items-center gap-4 mb-6 border-b border-slate-800 pb-4">
-                  <Terminal className="w-5 h-5 text-purple-400" />
-                  <span className="font-mono text-sm text-slate-400">PyLlamaUI - Local Intelligence</span>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white focus:outline-none">
+                        <i data-lucide="menu" id="menu-icon"></i>
+                        <i data-lucide="x" id="close-icon" class="hidden"></i>
+                    </button>
                 </div>
-                <div className="space-y-3 font-mono text-sm">
-                  <div className="flex gap-4">
-                    <span className="text-cyan-400">User:</span>
-                    <span className="text-slate-300">How do I optimize my Arch install?</span>
-                  </div>
-                  <div className="flex gap-4">
-                    <span className="text-purple-400">AI:</span>
-                    <span className="text-slate-400">Analyzing system configuration... Done. I recommend initializing the Oolit optimization module included in ZenSkin. Would you like me to run it?</span>
-                  </div>
-                  <div className="h-4 w-2 bg-purple-400 animate-pulse mt-2"></div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </section>
 
-      {/* Utilities Section */}
-      <section id="utilities" className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">Zentora Utilities</h2>
-            <p className="mt-4 text-slate-400">A powerful suite of tools included with the skin.</p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {utilities.map((tool, idx) => (
-              <a 
-                key={idx} 
-                href={tool.link} 
-                target="_blank" 
-                rel="noreferrer"
-                className="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <Box className="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors" />
-                  <span className="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">
-                    v1.0
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                  {tool.name}
-                </h3>
-                <p className="text-slate-500 text-sm">
-                  {tool.desc}
-                </p>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison Section */}
-      <section className="py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="p-8 md:p-12 bg-slate-900/50">
-                <h3 className="text-2xl font-bold text-white mb-6">Traditional Distro Hop</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center text-slate-400">
-                    <X className="w-5 h-5 text-red-500 mr-3" /> Requires full wipe & reinstall
-                  </li>
-                  <li className="flex items-center text-slate-400">
-                    <X className="w-5 h-5 text-red-500 mr-3" /> Loss of personal files
-                  </li>
-                  <li className="flex items-center text-slate-400">
-                    <X className="w-5 h-5 text-red-500 mr-3" /> Re-configuring everything manually
-                  </li>
-                  <li className="flex items-center text-slate-400">
-                    <X className="w-5 h-5 text-red-500 mr-3" /> High risk of breaking workflow
-                  </li>
-                </ul>
-              </div>
-              <div className="p-8 md:p-12 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-600/10"></div>
-                <h3 className="text-2xl font-bold text-white mb-6 relative z-10">The ZenSkin Way</h3>
-                <ul className="space-y-4 relative z-10">
-                  <li className="flex items-center text-white">
-                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
-                      <Check className="w-3 h-3 text-cyan-400" />
-                    </div>
-                    Keep your existing OS & Files
-                  </li>
-                  <li className="flex items-center text-white">
-                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
-                      <Check className="w-3 h-3 text-cyan-400" />
-                    </div>
-                    Modular installation
-                  </li>
-                  <li className="flex items-center text-white">
-                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
-                      <Check className="w-3 h-3 text-cyan-400" />
-                    </div>
-                    Instant AI Capabilities
-                  </li>
-                  <li className="flex items-center text-white">
-                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
-                      <Check className="w-3 h-3 text-cyan-400" />
-                    </div>
-                    100% Reversible
-                  </li>
-                </ul>
-              </div>
+        <!-- Mobile Nav Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="block px-3 py-2 text-base font-medium hover:bg-slate-800 hover:text-cyan-400 rounded-md mobile-link">Features</a>
+                <a href="#ai" class="block px-3 py-2 text-base font-medium hover:bg-slate-800 hover:text-cyan-400 rounded-md mobile-link">AI Layer</a>
+                <a href="#utilities" class="block px-3 py-2 text-base font-medium hover:bg-slate-800 hover:text-cyan-400 rounded-md mobile-link">Utilities</a>
+                <a href="#install" class="block px-3 py-2 text-base font-medium hover:bg-slate-800 hover:text-cyan-400 rounded-md mobile-link">Install</a>
             </div>
-          </div>
         </div>
-      </section>
+    </nav>
 
-      {/* Supported Platforms */}
-      <section className="py-10 border-t border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">
-            Works smoothly on top of
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-            {['Ubuntu', 'Debian', 'Fedora', 'Arch Linux', 'Linux Mint', 'Pop!_OS'].map((distro) => (
-              <span key={distro} className="text-lg font-bold text-slate-300 flex items-center gap-2">
-                <Monitor className="w-5 h-5" /> {distro}
-              </span>
-            ))}
-          </div>
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 relative overflow-hidden">
+        <!-- Background Gradients -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+            <div class="absolute top-20 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 pt-16 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            <div className="col-span-1 lg:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="flex justify-center mb-8">
                 <img 
-                  src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
-                  alt="ZenSkin Logo Small" 
-                  className="h-8 w-8 object-contain"
-                />
-                <span className="text-xl font-bold text-white">ZenSkin</span>
-              </div>
-              <p className="text-slate-400 mb-6 max-w-sm">
-                A cross-distro customization layer bringing the ZentoraOS experience to everyone. Open source and privacy focused.
-              </p>
-              <div className="flex space-x-4">
-                <a href="https://github.com/bhuvanesh-m-dev" className="text-slate-400 hover:text-white transition-colors">
-                  <Github className="w-6 h-6" />
-                </a>
-                <a href="https://www.linkedin.com/in/bhuvaneshm-developer" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  <Linkedin className="w-6 h-6" />
-                </a>
-                <a href="https://x.com/bhuvaneshm06" className="text-slate-400 hover:text-white transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </a>
-                <a href="mailto:bhuvaneshm.developer@gmail.com" className="text-slate-400 hover:text-red-400 transition-colors">
-                  <Mail className="w-6 h-6" />
-                </a>
-              </div>
+                    src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
+                    alt="ZenSkin Logo Big" 
+                    class="h-32 w-32 md:h-48 md:w-48 object-contain drop-shadow-[0_0_25px_rgba(34,211,238,0.3)] animate-pulse-slow"
+                >
             </div>
             
-            <div>
-              <h4 className="text-white font-bold mb-4">Resources</h4>
-              <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">GitHub Repository</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Report an Issue</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Releases</a></li>
-              </ul>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+                <span class="block text-white">ZentoraOS, but</span>
+                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                    Portable & Universal.
+                </span>
+            </h1>
+            
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
+                Transform your Linux system with the ZenSkin experience layer. 
+                Keep your distro, keep your files—upgrade your workflow.
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#install" class="px-8 py-3 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    Get ZenSkin
+                </a>
+                <a href="#features" class="px-8 py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-medium border border-slate-700 transition-all flex items-center justify-center gap-2">
+                    Learn More
+                </a>
             </div>
 
-            <div>
-              <h4 className="text-white font-bold mb-4">Future Plans</h4>
-              <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">GUI Installer</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Theme Marketplace</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Cloud Sync</a></li>
-              </ul>
+            <!-- Terminal Install Block -->
+            <div class="mt-16 mx-auto max-w-3xl" id="install">
+                <div class="rounded-xl overflow-hidden bg-[#0d1117] border border-slate-800 shadow-2xl">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-xs text-slate-500 font-mono">user@linux:~</div>
+                        <button 
+                            id="copy-btn"
+                            class="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors focus:outline-none"
+                        >
+                            <i data-lucide="copy" class="w-3 h-3 icon-copy"></i>
+                            <i data-lucide="check" class="w-3 h-3 icon-check hidden"></i>
+                            <span id="copy-text">Copy Command</span>
+                        </button>
+                    </div>
+                    <div class="p-6 text-left font-mono text-sm md:text-base overflow-x-auto text-slate-300 scrollbar-thin">
+                        <pre class="whitespace-pre-wrap break-all"><span class="text-green-400">$</span> <span id="install-command">wget -O zenskin.deb</span></pre>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-500">
+                    Downloads <span class="text-slate-300 font-mono">setbian.deb</span> installer and sets up the environment.
+                </p>
             </div>
-          </div>
-          
-          <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-500 text-sm">
-              © 2024 Bhuvanesh M. Open Source under MIT License.
-            </p>
-            <p className="text-slate-500 text-sm flex items-center">
-              Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> for the Linux Community
-            </p>
-          </div>
         </div>
-      </footer>
-    </div>
-  );
-};
+    </section>
 
-export default ZenSkinLanding;
+    <!-- Features Grid -->
+    <section id="features" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white sm:text-4xl">Why ZenSkin?</h2>
+                <p class="mt-4 text-slate-400">The power of a custom distro, the flexibility of a skin.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-6 bg-slate-950 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="layers" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Cross-Distro Layer</h3>
+                    <p class="text-slate-400 leading-relaxed">Not a new OS. ZenSkin works on top of Ubuntu, Fedora, Arch, and more without requiring a reinstall.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-6 bg-slate-950 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cpu" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">AI-Ready Environment</h3>
+                    <p class="text-slate-400 leading-relaxed">Includes Ollama, local LLM models, and PyLlamaUI out of the box. Privacy-first offline AI.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-6 bg-slate-950 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Safe & Reversible</h3>
+                    <p class="text-slate-400 leading-relaxed">Non-destructive. We backup your configs. Don't like it? Rollback instantly without breaking your system.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="p-6 bg-slate-950 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-6 h-6 text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">ZentoraOS Experience</h3>
+                    <p class="text-slate-400 leading-relaxed">Get the visual polish and workflow of ZentoraOS while keeping your favorite base distribution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Layer Section -->
+    <section id="ai" class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <div>
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-medium mb-6">
+                        <i data-lucide="zap" class="w-4 h-4 mr-2"></i> Signature Feature
+                    </div>
+                    <h2 class="text-3xl font-bold text-white sm:text-4xl mb-6">
+                        The AI Layer. <br />
+                        <span class="text-purple-400">Offline & Privacy-First.</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-6">
+                        ZenSkin transforms your machine into an AI powerhouse instantly. It detects your CPU/GPU capabilities and auto-configures the best local models.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+                                <i data-lucide="check" class="w-3 h-3 text-purple-400"></i>
+                            </div>
+                            Ollama Auto-Installation
+                        </li>
+                        <li class="flex items-center text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+                                <i data-lucide="check" class="w-3 h-3 text-purple-400"></i>
+                            </div>
+                            Local LLM Models Pre-loaded
+                        </li>
+                        <li class="flex items-center text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+                                <i data-lucide="check" class="w-3 h-3 text-purple-400"></i>
+                            </div>
+                            PyLlamaUI Interface included
+                        </li>
+                        <li class="flex items-center text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+                                <i data-lucide="check" class="w-3 h-3 text-purple-400"></i>
+                            </div>
+                            GPU Acceleration Detection
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-10 lg:mt-0 relative">
+                    <div class="absolute inset-0 bg-purple-500/20 blur-3xl rounded-full"></div>
+                    <div class="relative bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+                        <div class="flex items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                            <i data-lucide="terminal" class="w-5 h-5 text-purple-400"></i>
+                            <span class="font-mono text-sm text-slate-400">PyLlamaUI - Local Intelligence</span>
+                        </div>
+                        <div class="space-y-3 font-mono text-sm">
+                            <div class="flex gap-4">
+                                <span class="text-cyan-400">User:</span>
+                                <span class="text-slate-300">How do I optimize my Arch install?</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-purple-400">AI:</span>
+                                <span class="text-slate-400">Analyzing system configuration... Done. I recommend initializing the Oolit optimization module included in ZenSkin. Would you like me to run it?</span>
+                            </div>
+                            <div class="h-4 w-2 bg-purple-400 animate-pulse mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Utilities Section -->
+    <section id="utilities" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white sm:text-4xl">Zentora Utilities</h2>
+                <p class="mt-4 text-slate-400">A powerful suite of tools included with the skin.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Utility Cards -->
+                <a href="https://bhuvanesh-m-dev.github.io/cosmotalker/" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">CosmoTalker</h3>
+                    <p class="text-slate-500 text-sm">Advanced communication tool</p>
+                </a>
+
+                <a href="https://github.com/bhuvanesh-m-dev/formatflow" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">FormatFlow</h3>
+                    <p class="text-slate-500 text-sm">Code formatting utility</p>
+                </a>
+
+                <a href="https://github.com/bhuvanesh-m-dev/pyllamaui" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">PyLlamaUI</h3>
+                    <p class="text-slate-500 text-sm">Local AI Interface</p>
+                </a>
+
+                <a href="https://github.com/bhuvanesh-m-dev/setbian" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">SetBian</h3>
+                    <p class="text-slate-500 text-sm">Universal Installer</p>
+                </a>
+
+                <a href="https://github.com/bhuvanesh-m-dev/cosmo4u" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">Cosmo4U</h3>
+                    <p class="text-slate-500 text-sm">Personal assistant tool</p>
+                </a>
+
+                <a href="https://github.com/bhuvanesh-m-dev/oolit" target="_blank" rel="noreferrer" class="block p-6 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/40 hover:bg-slate-900 transition-all group">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="box" class="w-8 h-8 text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        <span class="text-xs bg-slate-900 text-slate-400 px-2 py-1 rounded border border-slate-800">v1.0</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">Oolit</h3>
+                    <p class="text-slate-500 text-sm">System optimization</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <!-- Traditional Way -->
+                    <div class="p-8 md:p-12 bg-slate-900/50">
+                        <h3 class="text-2xl font-bold text-white mb-6">Traditional Distro Hop</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-slate-400">
+                                <i data-lucide="x" class="w-5 h-5 text-red-500 mr-3"></i> Requires full wipe & reinstall
+                            </li>
+                            <li class="flex items-center text-slate-400">
+                                <i data-lucide="x" class="w-5 h-5 text-red-500 mr-3"></i> Loss of personal files
+                            </li>
+                            <li class="flex items-center text-slate-400">
+                                <i data-lucide="x" class="w-5 h-5 text-red-500 mr-3"></i> Re-configuring everything manually
+                            </li>
+                            <li class="flex items-center text-slate-400">
+                                <i data-lucide="x" class="w-5 h-5 text-red-500 mr-3"></i> High risk of breaking workflow
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- ZenSkin Way -->
+                    <div class="p-8 md:p-12 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-600/10"></div>
+                        <h3 class="text-2xl font-bold text-white mb-6 relative z-10">The ZenSkin Way</h3>
+                        <ul class="space-y-4 relative z-10">
+                            <li class="flex items-center text-white">
+                                <div class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
+                                    <i data-lucide="check" class="w-3 h-3 text-cyan-400"></i>
+                                </div>
+                                Keep your existing OS & Files
+                            </li>
+                            <li class="flex items-center text-white">
+                                <div class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
+                                    <i data-lucide="check" class="w-3 h-3 text-cyan-400"></i>
+                                </div>
+                                Modular installation
+                            </li>
+                            <li class="flex items-center text-white">
+                                <div class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
+                                    <i data-lucide="check" class="w-3 h-3 text-cyan-400"></i>
+                                </div>
+                                Instant AI Capabilities
+                            </li>
+                            <li class="flex items-center text-white">
+                                <div class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
+                                    <i data-lucide="check" class="w-3 h-3 text-cyan-400"></i>
+                                </div>
+                                100% Reversible
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Platforms -->
+    <section class="py-10 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">
+                Works smoothly on top of
+            </p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Ubuntu
+                </span>
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Debian
+                </span>
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Fedora
+                </span>
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Arch Linux
+                </span>
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Linux Mint
+                </span>
+                <span class="text-lg font-bold text-slate-300 flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-5 h-5"></i> Pop!_OS
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-900 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img 
+                            src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" 
+                            alt="ZenSkin Logo Small" 
+                            class="h-8 w-8 object-contain"
+                        >
+                        <span class="text-xl font-bold text-white">ZenSkin</span>
+                    </div>
+                    <p class="text-slate-400 mb-6 max-w-sm">
+                        A cross-distro customization layer bringing the ZentoraOS experience to everyone. Open source and privacy focused.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/bhuvanesh-m-dev" class="text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="github" class="w-6 h-6"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/bhuvaneshm-developer" class="text-slate-400 hover:text-blue-400 transition-colors">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="https://x.com/bhuvaneshm06" class="text-slate-400 hover:text-white transition-colors">
+                            <!-- X Icon (Manual SVG) -->
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a href="mailto:bhuvaneshm.developer@gmail.com" class="text-slate-400 hover:text-red-400 transition-colors">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">GitHub Repository</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Report an Issue</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Releases</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Future Plans</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">GUI Installer</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Theme Marketplace</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Cloud Sync</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-sm">
+                    © 2024 Bhuvanesh M. Open Source under MIT License.
+                </p>
+                <p class="text-slate-500 text-sm flex items-center">
+                    Made with <i data-lucide="heart" class="w-4 h-4 text-red-500 mx-1"></i> for the Linux Community
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+
+        // Close menu when a link is clicked
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Copy to Clipboard Logic
+        const copyBtn = document.getElementById('copy-btn');
+        const copyTextLabel = document.getElementById('copy-text');
+        const installCommand = `wget -O setbian.deb https://github.com/bhuvanesh-m-dev/setbian/releases/download/v0.0.5/setbian-0.0.5.deb && \\
+sudo dpkg -i setbian.deb || (sudo apt --fix-broken install -y && sudo dpkg -i setbian.deb) && \\
+setbian`;
+
+        copyBtn.addEventListener('click', () => {
+            // Use fallback textarea method for maximum compatibility
+            const el = document.createElement('textarea');
+            el.value = installCommand;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            // UI Feedback
+            const iconCopy = copyBtn.querySelector('.icon-copy');
+            const iconCheck = copyBtn.querySelector('.icon-check');
+            
+            iconCopy.classList.add('hidden');
+            iconCheck.classList.remove('hidden');
+            copyTextLabel.textContent = 'Copied!';
+            
+            // Re-render check icon since it was hidden on init
+            lucide.createIcons();
+
+            setTimeout(() => {
+                iconCopy.classList.remove('hidden');
+                iconCheck.classList.add('hidden');
+                copyTextLabel.textContent = 'Copy Command';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
