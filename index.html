@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZenSkin (Beta) - Transform Your Linux Desktop</title>
@@ -699,6 +700,109 @@ sudo dpkg -i zenskin.deb || (sudo apt --fix-broken install -y && sudo dpkg -i ze
             </div>
         </div>
     </section>
+
+
+
+            <!-- About Author Section (Inline CSS & JS) -->
+        <section style="padding: 6rem 0; position: relative; font-family: 'Inter', sans-serif; color: #f8fafc;">
+            <div style="max-width: 56rem; margin: 0 auto; padding: 0 1rem;">
+                
+                <!-- Glass Card -->
+                <div id="authorCard" 
+                     style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); padding: 2rem; border-radius: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; position: relative; overflow: hidden; transition: border-color 0.5s ease;"
+                     onmouseenter="this.style.borderColor='rgba(99, 102, 241, 0.3)'; document.getElementById('bgGlow').style.backgroundColor='rgba(99, 102, 241, 0.2)'; document.getElementById('picGlow').style.opacity='0.4'; document.getElementById('profileImg').style.transform='scale(1.1)';"
+                     onmouseleave="this.style.borderColor='rgba(255, 255, 255, 0.08)'; document.getElementById('bgGlow').style.backgroundColor='rgba(99, 102, 241, 0.1)'; document.getElementById('picGlow').style.opacity='0.2'; document.getElementById('profileImg').style.transform='scale(1)';">
+                    
+                    <!-- Decorative Background -->
+                    <div id="bgGlow" style="position: absolute; top: -6rem; right: -6rem; width: 16rem; height: 16rem; background-color: rgba(99, 102, 241, 0.1); border-radius: 9999px; filter: blur(80px); z-index: 0; transition: background-color 0.5s; pointer-events: none;"></div>
+
+                    <!-- Profile Pic -->
+                    <div style="position: relative; flex-shrink: 0; z-index: 10;">
+                        <div id="picGlow" style="position: absolute; inset: -4px; background: linear-gradient(to right, #6366f1, #9333ea); border-radius: 1rem; filter: blur(8px); opacity: 0.2; transition: opacity 0.5s;"></div>
+                        <div style="position: relative; width: 8rem; height: 10rem; border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                            <img id="profileImg" src="https://raw.githubusercontent.com/bhuvanesh-m-dev/bhuvanesh-m-dev.github.io/refs/heads/main/bhuvanesh-profile/bhuvanesh-profile.jpg" 
+                                 alt="Bhuvanesh M" 
+                                 style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s;">
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div id="authorContent" style="flex: 1; text-align: center; z-index: 10; padding-top: 0.5rem;">
+                        <div style="margin-bottom: 0.75rem;">
+                            <h3 style="font-size: 1.5rem; line-height: 2rem; font-weight: 700; color: white; margin: 0;">Bhuvanesh M</h3>
+                            <p style="color: #818cf8; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.025em; margin: 0;">Open Source AI & Linux Architect</p>
+                        </div>
+
+                        <p style="color: #d1d5db; font-size: 0.875rem; line-height: 1.625; margin-bottom: 1.5rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                            Passionate developer specializing in AI, system architecture, and space tech. Creator of the award-winning CosmoTalker (50k+ downloads) and ZentoraOS. Recognized by Tamil Nadu Astronomy and Science Society
+ for innovation in accessible, privacy-first computing.
+                        </p>
+
+                        <!-- Social Links -->
+                        <div id="socialLinks" style="display: flex; justify-content: center; gap: 0.75rem;">
+                             <!-- Github -->
+                            <a href="https://github.com/bhuvanesh-m-dev" 
+                               style="padding: 0.5rem; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af; transition: all 0.3s;"
+                               onmouseenter="this.style.backgroundColor='rgba(79, 70, 229, 1)'; this.style.color='white'; this.style.borderColor='rgba(99, 102, 241, 1)';"
+                               onmouseleave="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.color='#9ca3af'; this.style.borderColor='rgba(255, 255, 255, 0.05)';">
+                                <i class="fa-brands fa-github"></i>
+                            </a>
+                            <!-- LinkedIn -->
+                            <a href="https://www.linkedin.com/in/bhuvaneshm-developer/" 
+                               style="padding: 0.5rem; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af; transition: all 0.3s;"
+                               onmouseenter="this.style.backgroundColor='rgba(37, 99, 235, 1)'; this.style.color='white'; this.style.borderColor='rgba(59, 130, 246, 1)';"
+                               onmouseleave="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.color='#9ca3af'; this.style.borderColor='rgba(255, 255, 255, 0.05)';">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                            <!-- Dev.to -->
+                            <a href="https://dev.to/bhuvaneshm_dev" 
+                               style="padding: 0.5rem; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af; transition: all 0.3s;"
+                               onmouseenter="this.style.backgroundColor='black'; this.style.color='white'; this.style.borderColor='#6b7280';"
+                               onmouseleave="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.color='#9ca3af'; this.style.borderColor='rgba(255, 255, 255, 0.05)';">
+                                <i class="fa-brands fa-dev"></i>
+                            </a>
+                            <!-- Email -->
+                            <a href="mailto:bhuvaneshm.developer@gmail.com" 
+                               style="padding: 0.5rem; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af; transition: all 0.3s;"
+                               onmouseenter="this.style.backgroundColor='rgba(5, 150, 105, 1)'; this.style.color='white'; this.style.borderColor='rgba(16, 185, 129, 1)';"
+                               onmouseleave="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.color='#9ca3af'; this.style.borderColor='rgba(255, 255, 255, 0.05)';">
+                                <i class="fa-regular fa-envelope"></i>
+                            </a>
+                            <!-- Portfolio -->
+                            <a href="https://bhuvanesh-m-dev.github.io/" 
+                               style="padding: 0.5rem; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); color: #9ca3af; transition: all 0.3s;"
+                               onmouseenter="this.style.backgroundColor='rgba(147, 51, 234, 1)'; this.style.color='white'; this.style.borderColor='rgba(168, 85, 247, 1)';"
+                               onmouseleave="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.color='#9ca3af'; this.style.borderColor='rgba(255, 255, 255, 0.05)';">
+                                <i class="fa-solid fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inline JS for Responsiveness -->
+            <script>
+                (function() {
+                    function adjustLayout() {
+                        const card = document.getElementById('authorCard');
+                        const content = document.getElementById('authorContent');
+                        const links = document.getElementById('socialLinks');
+                        
+                        if (window.innerWidth >= 768) { // Desktop (md breakpoint)
+                            card.style.flexDirection = 'row';
+                            content.style.textAlign = 'left';
+                            links.style.justifyContent = 'flex-start';
+                        } else { // Mobile
+                            card.style.flexDirection = 'column';
+                            content.style.textAlign = 'center';
+                            links.style.justifyContent = 'center';
+                        }
+                    }
+                    window.addEventListener('resize', adjustLayout);
+                    adjustLayout(); // Initial call
+                })();
+            </script>
+        </section>
 
     <!-- Footer -->
     <footer class="py-12 border-t border-white/5">
