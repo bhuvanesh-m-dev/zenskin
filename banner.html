@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZentoraOS — 16:9 sharp frame (square corners)</title>
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f121c;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            padding: 16px;
+        }
+
+        /* ===== 16:9 EXACT FRAME – NOW WITH SHARP (SQUARE) CORNERS ===== */
+        .frame-16x9 {
+            width: 960px;            /* 16:9 base width */
+            height: 540px;            /* 9*60 = 540  */
+            background: linear-gradient(145deg, #141c34, #060813);
+            border-radius: 0;          /* SHARP – no rounding */
+            padding: 8px;              /* colourful outer border */
+            box-shadow: 
+                0 30px 50px -10px #000000cc,
+                0 0 0 3px rgba(0, 230, 255, 0.25) inset,
+                0 0 0 5px rgba(20, 40, 80, 0.9) inset;
+            position: relative;
+        }
+
+        /* main poster area – also sharp to match */
+        .poster-wide {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, #1a2442, #03050e);
+            border-radius: 0;          /* SHARP inner corner */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 200, 250, 0.3);
+            box-shadow: 0 0 40px rgba(70, 140, 255, 0.3) inset;
+            position: relative;
+        }
+
+        /* background grid */
+        .bg-grid-16 {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 200, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 200, 255, 0.06) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* floating particles */
+        .particle-zone {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle-wide {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #66f0ff;
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 20px #00b8ff;
+            opacity: 0.5;
+            animation: levitate 20s infinite linear;
+        }
+
+        @keyframes levitate {
+            0% { transform: translateY(600px) translateX(0) scale(1); opacity: 0; }
+            10% { opacity: 0.7; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-150px) translateX(60px) scale(0.3); opacity: 0; }
+        }
+
+        /* ===== FLEX LAYOUT: two columns ===== */
+        .content-row {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            z-index: 10;
+            position: relative;
+            padding: 14px 16px 10px 16px;
+            gap: 18px;
+            overflow: hidden;
+            height: calc(100% - 34px);
+        }
+
+        .left-panel {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .right-panel {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+            margin-right: 135px;    /* room for QR */
+        }
+
+        /* ----- shared components ----- */
+        .logo-wide {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.6rem;
+            line-height: 1;
+            background: linear-gradient(135deg, #adf0ff, #bd8aff, #6ddcff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 14px #0095ff);
+            margin-bottom: -5px;
+        }
+
+        .sub-wide {
+            font-size: 0.8rem;
+            letter-spacing: 2.2px;
+            color: #b2d0f0;
+            text-transform: uppercase;
+            border-bottom: 1px solid #2d4f8a;
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        .hero-pill {
+            background: rgba(0, 30, 60, 0.7);
+            border: 1px solid #3ec8ff;
+            border-radius: 40px;
+            padding: 8px 14px;
+            text-align: center;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 22px #1d4b90;
+            margin: 4px 0 6px 0;
+        }
+
+        .hero-pill span {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #e5f2ff;
+        }
+
+        .hero-pill .accent {
+            color: #4efff0;
+            font-weight: 700;
+            background: #103a60;
+            padding: 3px 12px;
+            border-radius: 40px;
+            margin: 0 4px;
+        }
+
+        .section-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #b0f0ff;
+            background: linear-gradient(90deg, #12223f, #162c50);
+            padding: 4px 14px;
+            border-radius: 30px;
+            border-left: 5px solid #9270ff;
+            width: fit-content;
+            margin: 2px 0 6px 0;
+        }
+
+        .grid-feat {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .feat-card {
+            background: rgba(12, 20, 38, 0.8);
+            backdrop-filter: blur(3px);
+            border: 1px solid #3366aa;
+            border-radius: 16px;
+            padding: 10px 4px;
+            text-align: center;
+            box-shadow: 0 4px 8px #00000040;
+        }
+
+        .feat-card .feat-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 6px cyan);
+        }
+
+        .feat-card h5 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #aae6ff;
+            margin: 4px 0 2px;
+        }
+
+        .feat-card p {
+            font-size: 0.6rem;
+            color: #b1c9f0;
+        }
+
+        .eco-panel {
+            background: #0c1530c0;
+            border-radius: 22px;
+            padding: 10px 12px;
+            border: 1px solid #9375e6;
+            backdrop-filter: blur(2px);
+        }
+
+        .eco-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 0;
+            border-bottom: 1px solid #293d75;
+        }
+        .eco-row:last-child { border-bottom: none; }
+
+        .eco-symbol {
+            font-size: 1.3rem;
+            width: 32px;
+            text-align: center;
+        }
+
+        .eco-text h6 {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #cbb2ff;
+        }
+
+        .eco-text p {
+            font-size: 0.6rem;
+            color: #9fb2dd;
+        }
+
+        .comp-wide {
+            background: #040c20b3;
+            border-radius: 20px;
+            padding: 10px 12px;
+            border: 1px solid #00b0d0;
+        }
+
+        .mini-table {
+            width: 100%;
+            font-size: 0.65rem;
+            border-collapse: collapse;
+        }
+
+        .mini-table th {
+            font-family: 'Orbitron', sans-serif;
+            color: #a0dcff;
+            font-weight: 600;
+            padding: 4px 2px;
+            border-bottom: 1px solid #3f6ea0;
+            text-align: left;
+        }
+        .mini-table td {
+            padding: 5px 2px;
+            border-bottom: 1px solid #202f50;
+            color: #d2e2ff;
+        }
+        .checkmark { color: #5effc6; font-weight: 700; }
+        .crossmark { color: #ff827a; }
+
+        .stat-wide {
+            display: flex;
+            gap: 5px;
+            justify-content: space-between;
+            margin: 6px 0 2px;
+        }
+        .stat-block {
+            flex: 1;
+            background: #14233e;
+            border-radius: 14px;
+            padding: 6px 0;
+            text-align: center;
+            border: 1px solid #4380c0;
+        }
+        .stat-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #8ef0ff;
+            line-height: 1;
+        }
+        .stat-txt {
+            font-size: 0.5rem;
+            color: #b3c9f0;
+            text-transform: uppercase;
+        }
+
+        .footer-wide {
+            background: #030b1c;
+            border-top: 2px solid #2f6396;
+            padding: 6px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.6rem;
+            color: #b7d0f0;
+            z-index: 10;
+            position: relative;
+        }
+
+        .footer-badge {
+            font-family: 'Orbitron', sans-serif;
+            background: #102c48;
+            padding: 3px 18px;
+            border-radius: 40px;
+            border: 1px solid #43c0ff;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* ===== QR CODE – sharp outer border (but qr itself rounded inside) ===== */
+        .qr-float {
+            position: absolute;
+            right: 6px;               /* shifted right */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 110px;
+            height: auto;
+            z-index: 30;
+            background: rgba(255,255,255,0.95);
+            border-radius: 0;          /* SHARP to match frame (you wanted square border) */
+            padding: 8px;
+            box-shadow: 0 0 30px #00e0ff, 0 8px 20px #00000080;
+            border: 2px solid #00d0ff;
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .qr-float img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0;           /* optional: keep QR corners sharp as well */
+        }
+
+        .qr-label {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            color: #b2ffff;
+            background: #0b1f3b;
+            margin-top: 4px;
+            border-radius: 0;            /* sharp label to match aesthetic */
+            padding: 2px 0;
+            border: 1px solid cyan;
+        }
+
+        /* fine-tune right margin to accommodate QR closer to edge */
+        .right-panel {
+            margin-right: 135px;     /* keep space */
+        }
+
+        @media print {
+            body { background: white; }
+            .frame-16x9 { box-shadow: 0 0 0 3px #000, 0 0 0 8px #aaa; }
+            .qr-float { border: 2px solid black; box-shadow: none; }
+        }
+    </style>
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="frame-16x9">   <!-- 16:9 outer frame – NOW WITH SHARP CORNERS -->
+        <div class="poster-wide">   <!-- inner poster also sharp -->
+
+            <div class="bg-grid-16"></div>
+            <div class="particle-zone" id="particleZone16"></div>
+
+            <div class="content-row">
+
+                <!-- LEFT COLUMN unchanged -->
+                <div class="left-panel">
+                    <div class="logo-wide">ZENTORAOS</div>
+                    <div class="sub-wide">the smart bridge — Windows to Linux</div>
+                    <div class="hero-pill">
+                        <span><span class="accent">⚡ Windows-like</span> + <span class="accent">🐧 Linux power</span> + <span class="accent">🧠 offline AI</span></span>
+                    </div>
+                    <div class="section-badge">✨ core features</div>
+                    <div class="grid-feat">
+                        <div class="feat-card"><span class="feat-icon">🆓</span><h5>Free forever</h5><p>open source</p></div>
+                        <div class="feat-card"><span class="feat-icon">🔒</span><h5>Privacy first</h5><p>no cloud</p></div>
+                        <div class="feat-card"><span class="feat-icon">🤖</span><h5>Offline AI</h5><p>ollama + pyllama</p></div>
+                        <div class="feat-card"><span class="feat-icon">🖥️</span><h5>Familiar UI</h5><p>windows‑like</p></div>
+                        <div class="feat-card"><span class="feat-icon">⚡</span><h5>Lightweight</h5><p>2GB RAM</p></div>
+                        <div class="feat-card"><span class="feat-icon">🛡️</span><h5>Linux based</h5><p>secure</p></div>
+                    </div>
+                    <div style="display: flex; gap: 6px; margin-top: 4px;">
+                        <div style="background: #182449; border-radius: 20px; padding: 4px 12px; border: 1px solid #2d92c0;">
+                            <span style="color: #aad0ff; font-size:0.65rem;">✅ 100% offline AI</span>
+                        </div>
+                        <div style="background: #182449; border-radius: 20px; padding: 4px 12px; border: 1px solid #9a7aff;">
+                            <span style="color: #dbbaff; font-size:0.65rem;">🔲 Windows migration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN with extra margin -->
+                <div class="right-panel">
+                    <div class="section-badge" style="border-left-color: #b385ff;">🌌 ecosystem</div>
+                    <div class="eco-panel">
+                        <div class="eco-row"><span class="eco-symbol">⚙️</span><div class="eco-text"><h6>Setbian</h6><p>setup helper – easy install</p></div></div>
+                        <div class="eco-row"><span class="eco-symbol">🎨</span><div class="eco-text"><h6>Zenskin</h6><p>App that mimic ZentoraOS</p></div></div>
+                        <div class="eco-row"><span class="eco-symbol">🧠</span><div class="eco-text"><h6>Ollama</h6><p>local AI, zero internet</p></div></div>
+                        <div class="eco-row"><span class="eco-symbol">💬</span><div class="eco-text"><h6>PyLlamaUI</h6><p>simple AI chat</p></div></div>
+                        <div class="eco-row"><span class="eco-symbol">🌟</span><div class="eco-text"><h6>CosmoTalker</h6><p>TASS's Best Project award</p></div></div>
+                        <div class="eco-row"><span class="eco-symbol">🔧</span><div class="eco-text"><h6>Cosmo4U</h6><p>GUI by CosmoTalker</p></div></div>
+                    </div>
+
+                    <div class="section-badge">⚖️ vs windows 11</div>
+                    <div class="comp-wide">
+                        <table class="mini-table">
+                            <tr><th>Feature</th><th>ZentoraOS</th><th>Windows</th></tr>
+                            <tr><td>💰 Cost</td><td class="checkmark">Free</td><td class="crossmark">Paid</td></tr>
+                            <tr><td>🤖 AI</td><td class="checkmark">Offline</td><td class="crossmark">Cloud</td></tr>
+                            <tr><td>🔒 Privacy</td><td class="checkmark">High</td><td class="crossmark">Low</td></tr>
+                            <tr><td>⚡ RAM</td><td class="checkmark">2GB</td><td class="crossmark">4GB+</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="stat-wide">
+                        <div class="stat-block"><span class="stat-num">0$</span> <div class="stat-txt">cost</div></div>
+                        <div class="stat-block"><span class="stat-num">2GB</span> <div class="stat-txt">min ram</div></div>
+                        <div class="stat-block"><span class="stat-num">100%</span> <div class="stat-txt">offline</div></div>
+                        <div class="stat-block"><span class="stat-num">∞</span> <div class="stat-txt">privacy</div></div>
+                    </div>
+
+                    <div style="background: #0d1b33; border-radius: 30px; padding: 4px 8px; text-align: center; border: 1px dashed #5080d0; margin-top: 2px;">
+                        <span style="color: #b4dcff; font-size: 0.6rem;">📦 open source · no telemetry · based on Debian</span>
+                    </div>
+                </div>
+            </div>
+
+        
+
+            <!-- ===== QR CODE – with sharp border to match frame ===== -->
+            <div class="qr-float">
+                <img src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/qrcode_bhuvanesh-m-dev.github.io.png" 
+                     alt="Scan to visit ZentoraOS"
+                     loading="lazy"
+                     onerror="this.style.opacity='0.7'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23003366\'/%3E%3Ctext x=\'10\' y=\'55\' fill=\'%23ffffff\' font-size=\'10\'%3EQR code%3C/text%3E%3C/svg%3E'">
+                <div class="qr-label">SCAN ME</div>
+            </div>
+
+        </div> <!-- end poster-wide -->
+    </div> <!-- end frame-16x9 (sharp) -->
+
+    <script>
+        (function() {
+            const zone = document.getElementById('particleZone16');
+            if (!zone) return;
+            for (let i=0; i<24; i++) {
+                let p = document.createElement('span');
+                p.className = 'particle-wide';
+                let s = 3 + Math.random() * 6;
+                p.style.width = s + 'px';
+                p.style.height = s + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 12 + 's';
+                p.style.animationDuration = 15 + Math.random() * 18 + 's';
+                p.style.background = `hsl(${170 + Math.random()*60}, 85%, 70%)`;
+                p.style.boxShadow = `0 0 25px #3cc0ff`;
+                zone.appendChild(p);
+            }
+        })();
+    </script>
+</body>
+</html>
