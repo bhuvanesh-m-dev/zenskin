@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenSkin • Developer Ecosystem & AI-Ready Linux Tooling</title>
+    <meta name="description" content="ZenSkin ecosystem: offline AI (PyLlamaUI), Setbian setup, FormatFlow, CosmoTools, Galacticode, CosmoTalker YASSC25. Pure black background, white text — developer hub.">
+    
+    <!-- Tailwind + Inter -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* PURE BLACK THEME (DEFAULT) - White text, pure black background */
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: rgba(0, 0, 0, 0.75);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --border-light: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(0, 0, 0, 0.65);
+            --code-bg: #0a0a0a;
+            --table-border: rgba(255, 255, 255, 0.08);
+            --aurora-overlay: radial-gradient(ellipse at 20% 40%, rgba(124,58,237,0.12) 0%, transparent 60%);
+            --hover-glow: rgba(124, 58, 237, 0.3);
+        }
+        
+        /* LIGHT THEME (alternative if user switches) */
+        body.light-theme {
+            --bg-primary: #f8fafc;
+            --bg-secondary: rgba(255, 255, 255, 0.9);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-light: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --code-bg: #f1f5f9;
+            --table-border: rgba(0, 0, 0, 0.08);
+            --aurora-overlay: radial-gradient(ellipse at 20% 40%, rgba(124,58,237,0.05) 0%, transparent 60%);
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Pure black background guarantee */
+        body.theme-dark {
+            background-color: #000000;
+        }
+        
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-light);
+            border-radius: 1.5rem;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+        
+        body.theme-dark .glass-panel {
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(120deg, #c084fc, #60a5fa, #34d399);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        body.light-theme .gradient-text {
+            background: linear-gradient(120deg, #7c3aed, #2563eb, #059669);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .aurora-bg {
+            background: var(--aurora-overlay);
+        }
+        
+        .feature-hover-card {
+            transition: all 0.25s ease;
+        }
+        
+        .feature-hover-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(124, 58, 237, 0.6);
+            box-shadow: 0 20px 30px -15px rgba(124, 58, 237, 0.35);
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 1rem;
+            border-left: 4px solid #8b5cf6;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95;
+            border-radius: 8px;
+        }
+        
+        /* Theme toggle button animation */
+        .theme-toggle {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Pure black nav overrides */
+        nav {
+            background: rgba(0, 0, 0, 0.85) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        
+        body.light-theme nav {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        body.light-theme .text-gray-300 {
+            color: #475569 !important;
+        }
+        
+        body.light-theme .text-gray-400 {
+            color: #64748b !important;
+        }
+        
+        body.light-theme .border-white\/10,
+        body.light-theme .border-white\/5 {
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        body.light-theme .bg-black\/40,
+        body.light-theme .bg-black\/30 {
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        /* Override any Tailwind default white backgrounds */
+        body.theme-dark .bg-white\/5 {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        body.theme-dark .bg-black\/40 {
+            background: rgba(0, 0, 0, 0.6) !important;
+        }
+        
+        /* Force white text on dark elements */
+        body.theme-dark .text-gray-300,
+        body.theme-dark .text-gray-400,
+        body.theme-dark .text-gray-500 {
+            color: #d1d5db !important;
+        }
+        
+        body.theme-dark .border-white\/10,
+        body.theme-dark .border-white\/5 {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Table styling for pure black */
+        body.theme-dark table tbody tr {
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+        }
+        
+        body.theme-dark th {
+            color: #c084fc;
+        }
+        
+        /* Terminal command area */
+        body.theme-dark .bg-black\/70 {
+            background: #0a0a0a !important;
+        }
+        
+        body.theme-dark code, 
+        body.theme-dark pre {
+            color: #a3e635;
+        }
+    </style>
+</head>
+<body class="theme-dark text-white aurora-bg">
+
+    <!-- Navbar with Theme Switcher -->
+    <nav class="fixed w-full z-50 backdrop-blur-xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img src="https://raw.githubusercontent.com/bhuvanesh-m-dev/zenskin/refs/heads/main/assets/zenskin.png" class="w-8 h-8 rounded-lg" alt="zenskin">
+                <span class="text-xl font-bold tracking-tight text-white">ZenSkin</span>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">dev ecosystem</span>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-medium items-center">
+                <a href="#ecosystem" class="text-gray-300 hover:text-purple-400 transition">Ecosystem</a>
+                <a href="#cosmotalker" class="text-gray-300 hover:text-purple-400 transition">CosmoTalker</a>
+                <a href="#tools" class="text-gray-300 hover:text-purple-400 transition">Tool suite</a>
+                <a href="#comic" class="text-gray-300 hover:text-purple-400 transition">ZentoraOS Comic</a>
+                <a href="https://github.com/bhuvanesh-m-dev/zenskin" target="_blank" class="flex items-center gap-1 text-gray-300 hover:text-white"><i data-lucide="github" class="w-4 h-4"></i> GitHub</a>
+                
+                <!-- Theme Switcher Button (Moon/Sun) -->
+                <button id="themeToggle" class="theme-toggle ml-2 p-2 rounded-full glass-panel border border-white/10 hover:border-purple-500/50 transition-all" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-4 h-4" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="pt-32 pb-16 px-6 max-w-6xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 rounded-full px-4 py-1.5 text-sm font-mono mb-6">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 
+            ZenSkin · AI-ready Linux transformation
+        </div>
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">Developer-first <span class="gradient-text">Ecosystem</span></h1>
+        <p class="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
+            ZenSkin isn't just a themer — it's the bridge between offline AI, system tooling, and a privacy-respecting Linux experience.  
+            Built for makers, researchers, and open-source contributors.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center mt-10">
+            <a href="#download-command" class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 shadow-lg shadow-purple-700/30 text-white"><i data-lucide="terminal"></i> Install ZenSkin</a>
+            <a href="https://github.com/bhuvanesh-m-dev/zenskin" target="_blank" class="bg-white/5 border border-white/10 hover:bg-white/10 px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 text-gray-200"><i data-lucide="book-open"></i> Contribute</a>
+        </div>
+    </section>
+
+    <!-- Ecosystem overview (offline + cross-platform) -->
+    <section id="ecosystem" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Complete offline & cross‑platform <span class="gradient-text">tooling</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto mt-3">Privacy-first. No telemetry. Works on Debian, Ubuntu, Fedora, Arch, Windows, and browser-based.</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- PyLlamaUI card -->
+            <div class="glass-panel p-6 feature-hover-card transition-all">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="bot" class="w-8 h-8 text-purple-400"></i><h3 class="text-xl font-bold text-white">PyLlamaUI</h3></div>
+                <p class="text-sm text-gray-300">Run LLMs fully offline with Ollama backend. Lightweight GUI, cross‑platform (Windows, Linux, macOS). Your data never leaves your machine.</p>
+                <div class="mt-4 flex gap-3 text-xs font-mono text-purple-300"><span>🐍 Python 3.10+</span><span>🔒 Offline-first</span></div>
+                <div class="mt-5"><a href="https://github.com/bhuvanesh-m-dev/pyllamaui" target="_blank" class="text-purple-300 hover:text-white text-sm flex items-center gap-1">Explore →</a></div>
+            </div>
+            <!-- Setbian -->
+            <div class="glass-panel p-6 feature-hover-card">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="settings" class="w-8 h-8 text-cyan-400"></i><h3 class="text-xl font-bold text-white">Setbian</h3></div>
+                <p class="text-sm text-gray-300">Make Linux meaningful — post-install setup assistant for Debian. GUI & CLI, app portal, community-driven .deb installer.</p>
+                <div class="mt-4 flex gap-2"><span class="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px]">.deb ready</span><span class="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px]">app portal</span></div>
+                <div class="mt-5"><a href="https://bhuvanesh-m-dev.github.io/setbian" target="_blank" class="text-cyan-300 hover:text-white text-sm flex items-center gap-1">Launch setbian →</a></div>
+            </div>
+            <!-- FormatFlow -->
+            <div class="glass-panel p-6 feature-hover-card">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="folder-tree" class="w-8 h-8 text-emerald-400"></i><h3 class="text-xl font-bold text-white">FormatFlow</h3></div>
+                <p class="text-sm text-gray-300">Intelligent file organizer: category → file type → date. Recursive scan, never overwrites, cross‑platform (Linux .deb + Windows .exe).</p>
+                <div class="mt-5"><a href="https://github.com/bhuvanesh-m-dev/formatflow" target="_blank" class="text-emerald-300 hover:text-white text-sm flex items-center gap-1">Download v0.1 →</a></div>
+            </div>
+            <!-- Galacticode (online python) -->
+            <div class="glass-panel p-6 feature-hover-card">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="code-2" class="w-8 h-8 text-yellow-400"></i><h3 class="text-xl font-bold text-white">Galacticode</h3></div>
+                <p class="text-sm text-gray-300">Browser‑based Python IDE powered by Pyodide. Pre‑loads CosmoTalker library — run astronomy code instantly, zero install.</p>
+                <div class="mt-4 flex gap-2"><span class="bg-yellow-500/10 text-yellow-300 px-2 py-0.5 rounded-full text-[11px]">WebAssembly</span><span class="bg-yellow-500/10 text-yellow-300 px-2 py-0.5 rounded-full text-[11px]">Space Lab</span></div>
+                <div class="mt-5"><a href="https://bhuvanesh-m-dev.github.io/galacticcode/" target="_blank" class="text-yellow-300 hover:text-white text-sm flex items-center gap-1">Open Galacticode →</a></div>
+            </div>
+            <!-- CosmoTools (privacy utilities) -->
+            <div class="glass-panel p-6 feature-hover-card">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="layers" class="w-8 h-8 text-rose-400"></i><h3 class="text-xl font-bold text-white">CosmoTools</h3></div>
+                <p class="text-sm text-gray-300">Fast browser utilities: QR generator, digital visiting card, PDF tools, calculator. 100% client‑side, zero tracking.</p>
+                <div class="mt-5"><a href="https://bhuvanesh-m-dev.github.io/cosmotools/" target="_blank" class="text-rose-300 hover:text-white text-sm flex items-center gap-1">Launch suite →</a></div>
+            </div>
+            <!-- ZentoraOS comic + OS -->
+            <div class="glass-panel p-6 feature-hover-card">
+                <div class="flex items-center gap-3 mb-4"><i data-lucide="sparkles" class="w-8 h-8 text-indigo-400"></i><h3 class="text-xl font-bold text-white">ZentoraOS</h3></div>
+                <p class="text-sm text-gray-300">Linux Mint remix with Windows‑like UI, preinstalled Ollama AI, Chromium. First Edition launched on Linux 34th birthday.</p>
+                <div class="mt-4 flex gap-2"><span class="bg-indigo-500/20 text-indigo-300 text-[11px] px-2 py-0.5 rounded-full">ISO 2.6GB</span></div>
+                <div class="mt-5"><a href="#comic" class="text-indigo-300 hover:text-white text-sm flex items-center gap-1">Read comic & download →</a></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COSMOTALKER RESEARCH + YASSC25 performance -->
+    <section id="cosmotalker" class="py-20 px-6 max-w-6xl mx-auto">
+        <div class="glass-panel p-8 md:p-10 border border-purple-500/20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
+            <div class="relative">
+                <div class="flex flex-col md:flex-row justify-between gap-8 items-start">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4"><i data-lucide="stars" class="w-6 h-6 text-purple-300"></i><span class="font-mono text-xs uppercase tracking-wider text-purple-300">Core Intelligence</span></div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">CosmoTalker · <span class="gradient-text">50k+ downloads</span></h2>
+                        <p class="text-gray-300 mt-4 max-w-xl">Award-winning offline Python library delivering planetary data, real‑time space updates, galaxy info, and cosmic facts. Trusted by educators, students, and space agencies.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                            <div class="bg-black/50 rounded-xl p-3 border-l-4 border-purple-500"><span class="text-2xl font-bold text-white">50k+</span><p class="text-xs text-gray-400">PyPI downloads</p></div>
+                            <div class="bg-black/50 rounded-xl p-3 border-l-4 border-cyan-500"><span class="text-2xl font-bold text-white">YASSC25</span><p class="text-xs text-gray-400">Selected performance showcase</p></div>
+                            <div class="bg-black/50 rounded-xl p-3 border-l-4 border-emerald-500"><span class="text-2xl font-bold text-white">100%</span><p class="text-xs text-gray-400">offline / no API key</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-black/60 rounded-2xl p-5 w-full md:w-80 border border-white/10">
+                        <div class="font-mono text-sm text-gray-200"><i data-lucide="package" class="w-4 h-4 inline mr-1"></i> pip install cosmotalker</div>
+                        <pre class="text-xs text-gray-300 mt-3 bg-black/70 p-3 rounded-lg overflow-x-auto"><span class="text-green-400">>>> import cosmotalker as ct</span>
+<span class="text-purple-300">>>> planet = ct.get_planet("mars")</span>
+<span class="text-yellow-400">'Mars: distance 2.279e8 km, moons: 2'</span>
+<span class="text-purple-300">>>> ct.random_fact()</span>
+'💫 The cosmic background radiation is ...'</pre>
+                        <div class="mt-4 text-xs text-gray-400 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400"></span> YASSC25 — high-performance async query & caching</div>
+                    </div>
+                </div>
+                <div class="mt-8 flex flex-wrap gap-5 text-sm border-t border-white/10 pt-6">
+                    <div><span class="font-bold text-white">Download stats:</span> <span class="text-gray-300">PyPI monthly ~8.2k (cosmotalker)</span></div>
+                    <div><span class="font-bold text-white">Awards:</span> <span class="text-gray-300">Tamil Nadu Astronomy & Science Innovation</span></div>
+                    <div><span class="font-bold text-white">Use cases:</span> <span class="text-gray-300">STEM labs, offline data loggers, planetariums</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- cross-platform tools + online offline matrix -->
+    <section id="tools" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-white">Every tool, every OS.<span class="gradient-text">  Zero compromises.</span></h2>
+            <p class="text-gray-400 mt-2">From .deb packages to static web apps — designed for privacy & performance.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="border-b border-white/10 text-purple-300">
+                    <tr><th class="p-3">Tool</th><th class="p-3">Linux</th><th class="p-3">Windows</th><th class="p-3">macOS</th><th class="p-3">Browser</th><th class="p-3">Offline</th></tr>
+                </thead>
+                <tbody class="text-gray-300 text-sm">
+                    <tr class="border-b border-white/5"><td class="p-3 font-medium text-white">PyLlamaUI</td><td class="p-3">✓ .deb / source</td><td class="p-3">✓ .exe</td><td class="p-3">✓ source</td><td class="p-3">–</td><td class="p-3 text-green-400">✅</td></tr>
+                    <tr class="border-b border-white/5"><td class="p-3 font-medium text-white">Setbian</td><td class="p-3">✓ .deb / CLI</td><td class="p-3">–</td><td class="p-3">–</td><td class="p-3">✓ portal</td><td class="p-3 text-green-400">✅</td></tr>
+                    <tr class="border-b border-white/5"><td class="p-3 font-medium text-white">FormatFlow</td><td class="p-3">✓ .deb</td><td class="p-3">✓ exe (beta)</td><td class="p-3">–</td><td class="p-3">–</td><td class="p-3 text-green-400">✅</td></tr>
+                    <tr class="border-b border-white/5"><td class="p-3 font-medium text-white">Galacticode</td><td class="p-3">✓ web</td><td class="p-3">✓ web</td><td class="p-3">✓ web</td><td class="p-3">✓ Pyodide</td><td class="p-3 text-green-400">✅ (after load)</td></tr>
+                    <tr class="border-b border-white/5"><td class="p-3 font-medium text-white">CosmoTools</td><td class="p-3">✓ web</td><td class="p-3">✓ web</td><td class="p-3">✓ web</td><td class="p-3">✓ static</td><td class="p-3 text-green-400">✅</td></tr>
+                    <tr><td class="p-3 font-medium text-white">ZenSkin (core)</td><td class="p-3">✓ .deb installer</td><td class="p-3">–</td><td class="p-3">–</td><td class="p-3">–</td><td class="p-3 text-green-400">✅</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-8 glass-panel p-5 text-center">
+            <p class="text-sm text-gray-300"><i data-lucide="globe" class="w-4 h-4 inline mr-1"></i> Galacticode & CosmoTools run entirely in-browser — no server, no data collection. perfect for schools & restricted environments.</p>
+        </div>
+    </section>
+
+    <!-- ZentoraOS Comic + download -->
+    <section id="comic" class="py-20 px-6 max-w-5xl mx-auto">
+        <div class="glass-panel p-6 md:p-10 text-center border border-indigo-500/30">
+            <i data-lucide="book-open" class="w-12 h-12 text-indigo-400 mx-auto mb-4"></i>
+            <h2 class="text-3xl font-bold text-white">📖 "The ZentoraOS Comic"</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mt-2">Celebrating Linux's 34th birthday — a visual journey through the philosophy of open source, AI, and community.</p>
+            <div class="flex flex-wrap justify-center gap-6 mt-8">
+                <a href="https://raw.githubusercontent.com/bhuvanesh-m-dev/zentoraos/main/comic_ZentoraOS.pdf" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 text-white"><i data-lucide="download"></i> Download comic PDF</a>
+                <a href="https://bhuvanesh-m-dev.github.io/zentoraos/read_comic" target="_blank" class="bg-white/5 border border-white/15 hover:bg-white/10 px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 text-gray-200"><i data-lucide="eye"></i> Read online (web viewer)</a>
+                <a href="https://bhuvaneshm.in/zentoraos/iso_files/zentoraos-0.4-64bit.iso" target="_blank" class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3 rounded-xl font-semibold shadow-lg flex items-center gap-2 text-white"><i data-lucide="download-cloud"></i> Download ZentoraOS ISO</a>
+            </div>
+            <p class="text-xs text-gray-500 mt-6">First Edition ISO size ~2.6 GB | Includes Chromium, Ollama, Windows-style layout, essential open source apps.</p>
+        </div>
+    </section>
+
+    <!-- Developer philosophy + quick install command -->
+    <section id="download-command" class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="bg-black/60 rounded-2xl p-8 border border-white/10">
+            <h3 class="text-2xl font-bold flex items-center gap-2 text-white"><i data-lucide="terminal"></i> One‑line ZenSkin install (Debian/Ubuntu)</h3>
+            <div class="relative mt-4 bg-black/90 rounded-xl p-4 font-mono text-sm border border-purple-500/30">
+                <pre class="overflow-x-auto text-green-300">wget -O zenskin.deb https://github.com/bhuvanesh-m-dev/zenskin/releases/download/zenskin-v1.deb/zenskin-v1.deb && sudo dpkg -i zenskin.deb || (sudo apt --fix-broken install -y && sudo dpkg -i zenskin.deb) && zenskin</pre>
+                <button onclick="copyCommand()" class="absolute top-3 right-3 bg-white/10 hover:bg-white/20 p-2 rounded-lg transition"><i data-lucide="copy" class="w-4 h-4 text-white"></i></button>
+            </div>
+            <p class="text-gray-400 text-sm mt-4">After installation, launch <span class="font-mono text-purple-300">zenskin</span> to transform your theme, install PyLlamaUI, Setbian modules & AI tools interactively.</p>
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-center text-xs text-gray-400 border-t border-white/5 pt-6">
+                <div><span class="font-bold text-white">🔧 modular architecture</span> — choose UI, AI runtime, productivity tools</div>
+                <div><span class="font-bold text-white">🔄 safe restore</span> — automatic backup of original dotfiles</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ecosystem stats + contribution -->
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-8 justify-between items-center bg-purple-900/5 p-8 rounded-2xl border border-white/5">
+            <div><i data-lucide="users" class="w-10 h-10 text-purple-400 mb-2"></i><div class="text-3xl font-bold text-white">5+</div><div class="text-gray-400">active FOSS projects</div></div>
+            <div><i data-lucide="download" class="w-10 h-10 text-cyan-400 mb-2"></i><div class="text-3xl font-bold text-white">75K+</div><div class="text-gray-400">cumulative downloads</div></div>
+            <div><i data-lucide="globe" class="w-10 h-10 text-emerald-400 mb-2"></i><div class="text-3xl font-bold text-white">100%</div><div class="text-gray-400">offline-first philosophy</div></div>
+            <div><i data-lucide="git-pull-request" class="w-10 h-10 text-amber-400 mb-2"></i><div class="text-3xl font-bold text-white">Open</div><div class="text-gray-400">contributions welcome</div></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 px-6 mt-10 text-center text-gray-400 text-sm">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between gap-6">
+            <div>ZenSkin ecosystem — Developed by <span class="text-purple-300">Bhuvanesh M</span> | MIT & GPLv3</div>
+            <div class="flex gap-6">
+                <a href="https://github.com/bhuvanesh-m-dev" target="_blank" class="hover:text-white"><i data-lucide="github" class="w-4 h-4 inline"></i> GitHub</a>
+                <a href="https://bhuvaneshm.in" target="_blank" class="hover:text-white">Portfolio</a>
+                <a href="https://pypi.org/project/cosmotalker/" target="_blank" class="hover:text-white">CosmoTalker PyPI</a>
+                <a href="https://bhuvanesh-m-dev.github.io/setbian/app-portal" target="_blank" class="hover:text-white">Setbian App Portal</a>
+            </div>
+        </div>
+        <div class="mt-6 text-[11px] font-mono opacity-50">YASSC25 performance: CosmoTalker async engine + zero-cache latency < 12ms for planet data. Used in zentoraOS live images.</div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Theme Switcher Logic — default pure black
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        
+        let currentTheme = localStorage.getItem('zenskin-theme') || 'dark';
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                body.classList.add('light-theme');
+                body.classList.remove('theme-dark');
+                themeIcon.setAttribute('data-lucide', 'sun');
+                localStorage.setItem('zenskin-theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('theme-dark');
+                themeIcon.setAttribute('data-lucide', 'moon');
+                localStorage.setItem('zenskin-theme', 'dark');
+            }
+            lucide.createIcons();
+        }
+        
+        setTheme(currentTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.classList.contains('light-theme') ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        function copyCommand() {
+            const text = `wget -O zenskin.deb https://github.com/bhuvanesh-m-dev/zenskin/releases/download/zenskin-v1.deb/zenskin-v1.deb && sudo dpkg -i zenskin.deb || (sudo apt --fix-broken install -y && sudo dpkg -i zenskin.deb) && zenskin`;
+            navigator.clipboard.writeText(text);
+            alert("✔️ ZenSkin install command copied to clipboard");
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) { e.preventDefault(); target.scrollIntoView({behavior: 'smooth'}); }
+            });
+        });
+    </script>
+    <img src="https://count.getloli.com/@zenskin-ecosystem?theme=ai-1&padding=0" width="1" height="1" style="display:none" alt="visitor counter">
+</body>
+</html>
